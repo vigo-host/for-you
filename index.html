@@ -4,25 +4,42 @@
 <meta charset="UTF-8">
 <title>Lagu ini untukmu</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
-body {
+* {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
     overflow: hidden;
 }
 
-/* BACKGROUND ANIME SEDIH */
-body::before {
-    content: "";
+/* VIDEO BACKGROUND ANIME */
+.bg-video {
     position: fixed;
     inset: 0;
-    background:
-        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
-        url("https://wallpapercave.com/wp/wp8984735.jpg");
-    background-size: cover;
-    background-position: center;
-    filter: blur(2px);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(3px) brightness(0.35);
+    animation: zoom 20s infinite alternate ease-in-out;
+    z-index: -2;
+}
+
+@keyframes zoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+}
+
+/* OVERLAY */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
     z-index: -1;
 }
 
@@ -32,17 +49,26 @@ body::before {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
     color: white;
+    text-align: center;
 }
 
+h1 {
+    font-weight: 300;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+/* BUTTON */
 .controls button {
-    background: rgba(0,0,0,0.6);
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.4);
     color: white;
-    border: 1px solid white;
-    padding: 10px 18px;
+    padding: 10px 20px;
     margin: 5px;
+    border-radius: 20px;
     cursor: pointer;
+    backdrop-filter: blur(6px);
 }
 
 .controls button:hover {
@@ -50,38 +76,52 @@ body::before {
     color: black;
 }
 
+/* PROGRESS */
 .progress {
-    width: 300px;
-    height: 5px;
-    background: rgba(255,255,255,0.3);
-    margin-top: 15px;
+    width: 280px;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    margin-top: 18px;
+    border-radius: 5px;
 }
 
 .progress-bar {
-    width: 0%;
     height: 100%;
+    width: 0%;
     background: white;
+    border-radius: 5px;
 }
 
-/* SUBTITLE */
+/* SUBTITLE VIRAL */
 #subtitle {
-    margin-top: 25px;
-    font-size: 20px;
-    min-height: 30px;
+    position: absolute;
+    bottom: 120px;
+    font-size: 22px;
+    min-height: 32px;
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.6s ease-in-out;
+    text-shadow:
+        0 0 10px rgba(255,255,255,0.6),
+        0 0 25px rgba(255,255,255,0.3);
 }
 
+/* CREDIT */
 .credit {
     position: absolute;
     bottom: 15px;
-    font-size: 12px;
-    opacity: 0.7;
+    font-size: 11px;
+    opacity: 0.6;
 }
 </style>
 </head>
 
 <body>
+
+<video class="bg-video" autoplay muted loop playsinline>
+    <source src="https://cdn.pixabay.com/video/2023/06/10/168148-835862698_large.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
 
 <div class="container">
     <h1>Pemutar Lagu</h1>
@@ -114,14 +154,8 @@ const audio = document.getElementById("audio");
 const subtitle = document.getElementById("subtitle");
 const progressBar = document.getElementById("progressBar");
 
-function playAudio() {
-    audio.play();
-}
-
-function pauseAudio() {
-    audio.pause();
-}
-
+function playAudio() { audio.play(); }
+function pauseAudio() { audio.pause(); }
 function restartAudio() {
     audio.currentTime = 0;
     audio.play();
@@ -144,10 +178,8 @@ let lastSubtitle = "";
 audio.addEventListener("timeupdate", () => {
     const currentTime = audio.currentTime;
 
-    // progress bar
     if (audio.duration) {
-        progressBar.style.width =
-            (currentTime / audio.duration) * 100 + "%";
+        progressBar.style.width = (currentTime / audio.duration) * 100 + "%";
     }
 
     for (let i = subtitles.length - 1; i >= 0; i--) {
