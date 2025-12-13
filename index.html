@@ -33,10 +33,10 @@
             background-color: #111;
             color: white;
             border: 1px solid white;
-            padding: 10px 20px;
+            padding: 10px 18px;
             margin: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .controls button:hover {
@@ -44,10 +44,27 @@
             color: black;
         }
 
+        /* Progress bar */
+        .progress {
+            width: 300px;
+            height: 5px;
+            background: #333;
+            margin-top: 15px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: white;
+        }
+
+        /* Subtitle */
         #subtitle {
             font-size: 20px;
             margin-top: 20px;
             min-height: 30px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
 
         /* Kredit */
@@ -61,10 +78,120 @@
         /* Background karakter */
         .bg-text {
             position: absolute;
-            color: rgba(255, 255, 255, 0.05);
-            font-size: 80px;
+            color: rgba(255, 255, 255, 0.06);
+            font-size: 60px;
             user-select: none;
-            animation: float 10s infinite linear;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(110vh);
+            }
+            to {
+                transform: translateY(-200px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background karakter banyak & acak -->
+    <script>
+        const symbols = ["♪", "♫", "♬", "♩"];
+        for (let i = 0; i < 15; i++) {
+            const span = document.createElement("div");
+            span.className = "bg-text";
+            span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            span.style.left = Math.random() * 100 + "%";
+            span.style.animationDuration = (6 + Math.random() * 10) + "s";
+            span.style.fontSize = (40 + Math.random() * 60) + "px";
+            document.body.appendChild(span);
+        }
+    </script>
+
+    <div class="container">
+        <h1>Pemutar Lagu</h1>
+
+        <audio id="audio">
+            <source src="https://a.top4top.io/m_36341kguk0.mp3" type="audio/mpeg">
+        </audio>
+
+        <div class="controls">
+            <button onclick="playAudio()">▶ Play</button>
+            <button onclick="pauseAudio()">⏸ Pause</button>
+            <button onclick="restartAudio()">⏮ Restart</button>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Subtitle -->
+        <div id="subtitle">Subtitle akan muncul di sini</div>
+
+        <!-- Kredit -->
+        <div class="credit">
+            Dibuat oleh: Vigoo <br>
+            TikTok: @.ovidio_guzman <br>
+            WhatsApp: 6289509082049
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById("audio");
+        const subtitle = document.getElementById("subtitle");
+        const progressBar = document.getElementById("progressBar");
+
+        function playAudio() {
+            audio.play();
+        }
+
+        function pauseAudio() {
+            audio.pause();
+        }
+
+        function restartAudio() {
+            audio.currentTime = 0;
+            audio.play();
+        }
+
+        const subtitles = [
+            { time: 0.0, text: "Lantas mengapa ku masih menaruh hati" },
+            { time: 6.6, text: "Lantas mengapa ku masih menaruh hati" },
+            { time: 11.8, text: "Padahal kutahu kau telah terikat janji" },
+            { time: 16.9, text: "Keliru ataukah bukan tak tahu" },
+            { time: 22.9, text: "Lupakanmu tapi aku tak mau" },
+            { time: 28.4, text: "Pantaskah aku untuk menyimpan" },
+            { time: 35.8, text: "Karena bukan aku yang memilikimu" },
+            { time: 39.9, text: "Sanggup sampai kapankah ku tak tahu" },
+            { time: 49.8, text: "Akankah akal sehat menyadarkanku" }
+        ];
+
+        audio.addEventListener("timeupdate", () => {
+            const currentTime = audio.currentTime;
+
+            // progress bar
+            if (audio.duration) {
+                progressBar.style.width = (currentTime / audio.duration) * 100 + "%";
+            }
+
+            for (let i = subtitles.length - 1; i >= 0; i--) {
+                if (currentTime >= subtitles[i].time) {
+                    subtitle.style.opacity = 0;
+                    setTimeout(() => {
+                        subtitle.textContent = subtitles[i].text;
+                        subtitle.style.opacity = 1;
+                    }, 200);
+                    break;
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>            animation: float 10s infinite linear;
         }
 
         @keyframes float {
