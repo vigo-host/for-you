@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Pemutar Lagu + Subtitle</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        /* Tombol kontrol */
+        .controls button {
+            background-color: #111;
+            color: white;
+            border: 1px solid white;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .controls button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        #subtitle {
+            font-size: 20px;
+            margin-top: 20px;
+            min-height: 30px;
+        }
+
+        /* Kredit */
+        .credit {
+            position: absolute;
+            bottom: 15px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        /* Background karakter */
+        .bg-text {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.05);
+            font-size: 80px;
+            user-select: none;
+            animation: float 10s infinite linear;
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(100vh);
+            }
+            to {
+                transform: translateY(-200px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Karakter background -->
+    <div class="bg-text" style="left: 10%;">♪</div>
+    <div class="bg-text" style="left: 40%; animation-duration: 12s;">♫</div>
+    <div class="bg-text" style="left: 70%; animation-duration: 9s;">♬</div>
+
+    <div class="container">
+        <h1>Pemutar Lagu</h1>
+
+        <!-- Audio (tanpa controls bawaan) -->
+        <audio id="audio">
+            <source src="https://a.top4top.io/m_36341kguk0.mp3" type="audio/mpeg">
+            Browser kamu tidak mendukung audio.
+        </audio>
+
+        <!-- Tombol Play & Pause -->
+        <div class="controls">
+            <button onclick="playAudio()">▶ Play</button>
+            <button onclick="pauseAudio()">⏸ Pause</button>
+        </div>
+
+        <!-- Subtitle -->
+        <div id="subtitle">Subtitle akan muncul di sini</div>
+
+        <!-- Kredit -->
+        <div class="credit">
+            Dibuat oleh: Vigoo <br>
+            TikTok: @.ovidio_guzman <br>
+            WhatsApp: 6289509082049
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById("audio");
+        const subtitle = document.getElementById("subtitle");
+
+        function playAudio() {
+            audio.play();
+        }
+
+        function pauseAudio() {
+            audio.pause();
+        }
+
+        // Subtitle (waktu dalam detik)
+        const subtitles = [
+            { time: 0.0, text: "Lantas mengapa ku masih menaruh hati" },
+            { time: 6.6, text: "Lantas mengapa ku masih menaruh hati" },
+            { time: 12.2, text: "Padahal kutahu kau telah terikat janji" },
+            { time: 17.5, text: "Keliru ataukah bukan tak tahu" },
+            { time: 23.5, text: "Lupakanmu tapi aku tak mau" },
+            { time: 28.4, text: "Pantaskah aku untuk menyimpan" },
+            { time: 36.0, text: "Karena bukan aku yang memilikimu" },
+            { time: 39.9, text: "Sanggup sampai kapankah ku tak tahu" },
+            { time: 45.4, text: "Akankah akal sehat menyadarkanku" }
+        ];
+
+        audio.addEventListener("timeupdate", () => {
+            const currentTime = audio.currentTime;
+
+            for (let i = subtitles.length - 1; i >= 0; i--) {
+                if (currentTime >= subtitles[i].time) {
+                    subtitle.textContent = subtitles[i].text;
+                    break;
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
