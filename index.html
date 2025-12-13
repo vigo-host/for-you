@@ -1,278 +1,171 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Pemutar Lagu + Subtitle</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: black;
-            color: white;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
+<meta charset="UTF-8">
+<title>Pemutar Lagu + Subtitle</title>
 
-        .container {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-            text-align: center;
-        }
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
 
-        h1 {
-            margin-bottom: 10px;
-        }
+/* BACKGROUND ANIME SEDIH */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
+        url("https://wallpapercave.com/wp/wp8984735.jpg");
+    background-size: cover;
+    background-position: center;
+    filter: blur(2px);
+    z-index: -1;
+}
 
-        /* Tombol kontrol */
-        .controls button {
-            background-color: #111;
-            color: white;
-            border: 1px solid white;
-            padding: 10px 18px;
-            margin: 5px;
-            cursor: pointer;
-            font-size: 15px;
-        }
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
 
-        .controls button:hover {
-            background-color: white;
-            color: black;
-        }
+.controls button {
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: 1px solid white;
+    padding: 10px 18px;
+    margin: 5px;
+    cursor: pointer;
+}
 
-        /* Progress bar */
-        .progress {
-            width: 300px;
-            height: 5px;
-            background: #333;
-            margin-top: 15px;
-        }
+.controls button:hover {
+    background: white;
+    color: black;
+}
 
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background: white;
-        }
+.progress {
+    width: 300px;
+    height: 5px;
+    background: rgba(255,255,255,0.3);
+    margin-top: 15px;
+}
 
-        /* Subtitle */
-        #subtitle {
-            font-size: 20px;
-            margin-top: 20px;
-            min-height: 30px;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: white;
+}
 
-        /* Kredit */
-        .credit {
-            position: absolute;
-            bottom: 15px;
-            font-size: 12px;
-            opacity: 0.7;
-        }
+/* SUBTITLE */
+#subtitle {
+    margin-top: 25px;
+    font-size: 20px;
+    min-height: 30px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
 
-        /* Background karakter */
-        .bg-text {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.06);
-            font-size: 60px;
-            user-select: none;
-            animation: float linear infinite;
-        }
-
-        @keyframes float {
-            from {
-                transform: translateY(110vh);
-            }
-            to {
-                transform: translateY(-200px);
-            }
-        }
-    </style>
+.credit {
+    position: absolute;
+    bottom: 15px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+</style>
 </head>
+
 <body>
 
-    <!-- Background karakter banyak & acak -->
-    <script>
-        const symbols = ["♪", "♫", "♬", "♩"];
-        for (let i = 0; i < 15; i++) {
-            const span = document.createElement("div");
-            span.className = "bg-text";
-            span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-            span.style.left = Math.random() * 100 + "%";
-            span.style.animationDuration = (6 + Math.random() * 10) + "s";
-            span.style.fontSize = (40 + Math.random() * 60) + "px";
-            document.body.appendChild(span);
-        }
-    </script>
+<div class="container">
+    <h1>Pemutar Lagu</h1>
 
-    <div class="container">
-        <h1>Pemutar Lagu</h1>
+    <audio id="audio">
+        <source src="https://a.top4top.io/m_36341kguk0.mp3" type="audio/mpeg">
+    </audio>
 
-        <audio id="audio">
-            <source src="https://a.top4top.io/m_36341kguk0.mp3" type="audio/mpeg">
-        </audio>
-
-        <div class="controls">
-            <button onclick="playAudio()">▶ Play</button>
-            <button onclick="pauseAudio()">⏸ Pause</button>
-            <button onclick="restartAudio()">⏮ Restart</button>
-        </div>
-
-        <!-- Progress bar -->
-        <div class="progress">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-
-        <!-- Subtitle -->
-        <div id="subtitle">Subtitle akan muncul di sini</div>
-
-        <!-- Kredit -->
-        <div class="credit">
-            Dibuat oleh: Vigoo <br>
-            TikTok: @.ovidio_guzman <br>
-            WhatsApp: 6289509082049
-        </div>
+    <div class="controls">
+        <button onclick="playAudio()">▶ Play</button>
+        <button onclick="pauseAudio()">⏸ Pause</button>
+        <button onclick="restartAudio()">⏮ Restart</button>
     </div>
 
-    <script>
-        const audio = document.getElementById("audio");
-        const subtitle = document.getElementById("subtitle");
-        const progressBar = document.getElementById("progressBar");
-
-        function playAudio() {
-            audio.play();
-        }
-
-        function pauseAudio() {
-            audio.pause();
-        }
-
-        function restartAudio() {
-            audio.currentTime = 0;
-            audio.play();
-        }
-
-        const subtitles = [
-            { time: 0.0, text: "Lantas mengapa ku masih menaruh hati" },
-            { time: 6.6, text: "Lantas mengapa ku masih menaruh hati" },
-            { time: 11.8, text: "Padahal kutahu kau telah terikat janji" },
-            { time: 16.9, text: "Keliru ataukah bukan tak tahu" },
-            { time: 22.9, text: "Lupakanmu tapi aku tak mau" },
-            { time: 28.4, text: "Pantaskah aku untuk menyimpan" },
-            { time: 35.8, text: "Karena bukan aku yang memilikimu" },
-            { time: 39.9, text: "Sanggup sampai kapankah ku tak tahu" },
-            { time: 49.8, text: "Akankah akal sehat menyadarkanku" }
-        ];
-
-        audio.addEventListener("timeupdate", () => {
-            const currentTime = audio.currentTime;
-
-            // progress bar
-            if (audio.duration) {
-                progressBar.style.width = (currentTime / audio.duration) * 100 + "%";
-            }
-
-            for (let i = subtitles.length - 1; i >= 0; i--) {
-                if (currentTime >= subtitles[i].time) {
-                    subtitle.style.opacity = 0;
-                    setTimeout(() => {
-                        subtitle.textContent = subtitles[i].text;
-                        subtitle.style.opacity = 1;
-                    }, 200);
-                    break;
-                }
-            }
-        });
-    </script>
-
-</body>
-</html>            animation: float 10s infinite linear;
-        }
-
-        @keyframes float {
-            from {
-                transform: translateY(100vh);
-            }
-            to {
-                transform: translateY(-200px);
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Karakter background -->
-    <div class="bg-text" style="left: 10%;">♪</div>
-    <div class="bg-text" style="left: 40%; animation-duration: 12s;">♫</div>
-    <div class="bg-text" style="left: 70%; animation-duration: 9s;">♬</div>
-
-    <div class="container">
-        <h1>Pemutar Lagu</h1>
-
-        <!-- Audio (tanpa controls bawaan) -->
-        <audio id="audio">
-            <source src="https://a.top4top.io/m_36341kguk0.mp3" type="audio/mpeg">
-            Browser kamu tidak mendukung audio.
-        </audio>
-
-        <!-- Tombol Play & Pause -->
-        <div class="controls">
-            <button onclick="playAudio()">▶ Play</button>
-            <button onclick="pauseAudio()">⏸ Pause</button>
-        </div>
-
-        <!-- Subtitle -->
-        <div id="subtitle">Subtitle akan muncul di sini</div>
-
-        <!-- Kredit -->
-        <div class="credit">
-            Dibuat oleh: Vigoo <br>
-            TikTok: @.ovidio_guzman <br>
-            WhatsApp: 6289509082049
-        </div>
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <script>
-        const audio = document.getElementById("audio");
-        const subtitle = document.getElementById("subtitle");
+    <div id="subtitle"></div>
 
-        function playAudio() {
-            audio.play();
-        }
+    <div class="credit">
+        Dibuat oleh: Vigoo <br>
+        TikTok: @.ovidio_guzman <br>
+        WhatsApp: 6289509082049
+    </div>
+</div>
 
-        function pauseAudio() {
-            audio.pause();
-        }
+<script>
+const audio = document.getElementById("audio");
+const subtitle = document.getElementById("subtitle");
+const progressBar = document.getElementById("progressBar");
 
-        // Subtitle (waktu dalam detik)
-        const subtitles = [
-            { time: 0.0, text: "Lantas mengapa ku masih menaruh hati" },
-            { time: 6.6, text: "Lantas mengapa ku masih menaruh hati" },
-            { time: 11.8, text: "Padahal kutahu kau telah terikat janji" },
-            { time: 16.9, text: "Keliru ataukah bukan tak tahu" },
-            { time: 22.9, text: "Lupakanmu tapi aku tak mau" },
-            { time: 28.4, text: "Pantaskah aku untuk menyimpan" },
-            { time: 35.8, text: "Karena bukan aku yang memilikimu" },
-            { time: 39.9, text: "Sanggup sampai kapankah ku tak tahu" },
-            { time: 49.8, text: "Akankah akal sehat menyadarkanku" }
-        ];
+function playAudio() {
+    audio.play();
+}
 
-        audio.addEventListener("timeupdate", () => {
-            const currentTime = audio.currentTime;
+function pauseAudio() {
+    audio.pause();
+}
 
-            for (let i = subtitles.length - 1; i >= 0; i--) {
-                if (currentTime >= subtitles[i].time) {
+function restartAudio() {
+    audio.currentTime = 0;
+    audio.play();
+}
+
+const subtitles = [
+    { time: 0.0, text: "Lantas mengapa ku masih menaruh hati" },
+    { time: 6.6, text: "Lantas mengapa ku masih menaruh hati" },
+    { time: 11.8, text: "Padahal kutahu kau telah terikat janji" },
+    { time: 16.9, text: "Keliru ataukah bukan tak tahu" },
+    { time: 22.9, text: "Lupakanmu tapi aku tak mau" },
+    { time: 28.4, text: "Pantaskah aku untuk menyimpan" },
+    { time: 35.8, text: "Karena bukan aku yang memilikimu" },
+    { time: 39.9, text: "Sanggup sampai kapankah ku tak tahu" },
+    { time: 49.8, text: "Akankah akal sehat menyadarkanku" }
+];
+
+let lastSubtitle = "";
+
+audio.addEventListener("timeupdate", () => {
+    const currentTime = audio.currentTime;
+
+    // progress bar
+    if (audio.duration) {
+        progressBar.style.width =
+            (currentTime / audio.duration) * 100 + "%";
+    }
+
+    for (let i = subtitles.length - 1; i >= 0; i--) {
+        if (currentTime >= subtitles[i].time) {
+            if (lastSubtitle !== subtitles[i].text) {
+                lastSubtitle = subtitles[i].text;
+                subtitle.style.opacity = 0;
+
+                setTimeout(() => {
                     subtitle.textContent = subtitles[i].text;
-                    break;
-                }
+                    subtitle.style.opacity = 1;
+                }, 200);
             }
-        });
-    </script>
+            break;
+        }
+    }
+});
+</script>
 
 </body>
 </html>
