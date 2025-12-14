@@ -7,11 +7,126 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-<!-- JIKA MAU PISAH FILE -->
-<!-- <link rel="stylesheet" href="style.css"> -->
-
 <style>
-/* JIKA TIDAK MAU PISAH FILE, TEMPEL CSS DI SINI */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:black;
+    overflow:hidden;
+}
+
+/* VIDEO BACKGROUND */
+.bg-video{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-1;
+}
+
+/* CONTAINER */
+.container{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    padding:20px;
+}
+
+/* SUBTITLE */
+#subtitle{
+    font-size:34px;
+    font-weight:600;
+    text-align:center;
+    max-width:90%;
+    margin-bottom:45px;
+    opacity:0;
+    transition:opacity .6s ease;
+    text-shadow:
+        0 0 12px rgba(0,0,0,.8),
+        0 0 30px rgba(0,0,0,.6);
+}
+
+/* PLAYER */
+.player{
+    width:320px;
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(10px);
+    border-radius:22px;
+    padding:22px;
+    margin-top:-10px;
+    margin-bottom:70px;
+}
+
+/* PROGRESS */
+.progress{
+    width:100%;
+    height:4px;
+    background:rgba(255,255,255,.3);
+    border-radius:5px;
+    overflow:hidden;
+    margin-bottom:20px;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:white;
+}
+
+/* CONTROLS */
+.controls{
+    display:flex;
+    justify-content:center;
+}
+
+/* PLAY BUTTON — SPOTIFY STYLE */
+.play-btn{
+    width:68px;
+    height:68px;
+    border-radius:50%;
+    border:2px solid rgba(255,255,255,.85);
+    background:black;
+    color:white;
+    font-size:26px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.6);
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        background .25s ease;
+}
+
+.play-btn:hover{
+    transform:scale(1.12);
+    background:#111;
+    box-shadow:0 14px 40px rgba(0,0,0,.8);
+}
+
+.play-btn:active{
+    transform:scale(0.95);
+}
+
+/* CREDIT */
+.credit{
+    position:absolute;
+    bottom:12px;
+    text-align:center;
+    font-size:11px;
+    opacity:.6;
+    line-height:1.4;
+}
 </style>
 </head>
 
@@ -101,4 +216,4 @@ audio.addEventListener("timeupdate",()=>{
 </script>
 
 </body>
-</html>
+    </html>
