@@ -35,7 +35,7 @@ body{
     height:100vh;
     display:flex;
     flex-direction:column;
-    justify-content:center;
+    justify-content:center; /* subtitle tetap di tengah */
     align-items:center;
     color:white;
     padding:10px;
@@ -47,7 +47,6 @@ body{
     font-weight:600;
     text-align:center;
     max-width:95%;
-    margin-bottom:40px; /* tambah jarak ke player */
     opacity:0;
     transition:opacity .6s ease;
     text-shadow:
@@ -55,15 +54,16 @@ body{
         0 0 30px rgba(0,0,0,.6);
 }
 
-/* PLAYER */
+/* PLAYER FIXED BOTTOM */
 .player{
+    position:fixed;
+    bottom:20px; /* jarak dari bawah layar */
     width:90%;
     max-width:360px;
     background:rgba(0,0,0,.55);
     backdrop-filter:blur(10px);
     border-radius:22px;
-    padding:20px;
-    margin-bottom:50px;
+    padding:15px 20px;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -76,7 +76,7 @@ body{
     background:rgba(255,255,255,.3);
     border-radius:5px;
     overflow:hidden;
-    margin-bottom:12px;
+    margin-bottom:8px;
     position:relative;
 }
 
@@ -92,7 +92,7 @@ body{
     display:flex;
     justify-content:space-between;
     font-size:12px;
-    margin-bottom:15px;
+    margin-bottom:10px;
 }
 
 /* CONTROLS */
@@ -134,21 +134,12 @@ body{
 /* CREDIT */
 .credit{
     position:absolute;
-    bottom:10px;
+    bottom:5px;
     text-align:center;
     font-size:12px;
     opacity:.6;
     line-height:1.4;
     color:white;
-}
-
-@media(max-width:400px){
-    .player{
-        padding:15px;
-    }
-    #subtitle{
-        margin-bottom:30px;
-    }
 }
 </style>
 </head>
@@ -161,24 +152,23 @@ body{
 </video>
 
 <div class="container">
-
     <div id="subtitle"></div>
+</div>
 
-    <div class="player">
-        <div class="time">
-            <span id="currentTime">0:00</span>
-            <span id="duration">0:00</span>
-        </div>
-
-        <div class="progress">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-
-        <div class="controls">
-            <button class="play-btn" id="playBtn">▶</button>
-        </div>
+<!-- PLAYER DI BAWAH -->
+<div class="player">
+    <div class="time">
+        <span id="currentTime">0:00</span>
+        <span id="duration">0:00</span>
     </div>
 
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="controls">
+        <button class="play-btn" id="playBtn">▶</button>
+    </div>
 </div>
 
 <div class="credit">
@@ -257,4 +247,4 @@ audio.addEventListener("timeupdate",()=>{
 </script>
 
 </body>
-</html>
+    </html>
