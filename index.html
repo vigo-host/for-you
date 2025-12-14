@@ -38,16 +38,16 @@ body{
     justify-content:center;
     align-items:center;
     color:white;
-    padding:20px;
+    padding:10px;
 }
 
 /* SUBTITLE */
 #subtitle{
-    font-size:34px;
+    font-size: clamp(18px,5vw,34px); /* responsif HP & desktop */
     font-weight:600;
     text-align:center;
-    max-width:90%;
-    margin-bottom:45px;
+    max-width:95%;
+    margin-bottom:30px;
     opacity:0;
     transition:opacity .6s ease;
     text-shadow:
@@ -57,13 +57,14 @@ body{
 
 /* PLAYER */
 .player{
-    width:320px;
+    width:90%;           /* responsif */
+    max-width:360px;     /* batas atas desktop */
     background:rgba(0,0,0,.55);
     backdrop-filter:blur(10px);
     border-radius:22px;
-    padding:22px;
+    padding:18px;
     margin-top:-10px;
-    margin-bottom:70px;
+    margin-bottom:50px;
 }
 
 /* PROGRESS */
@@ -73,7 +74,7 @@ body{
     background:rgba(255,255,255,.3);
     border-radius:5px;
     overflow:hidden;
-    margin-bottom:20px;
+    margin-bottom:18px;
 }
 
 .progress-bar{
@@ -90,18 +91,18 @@ body{
 
 /* PLAY BUTTON — SPOTIFY STYLE */
 .play-btn{
-    width:68px;
-    height:68px;
+    width:clamp(50px,12vw,68px);
+    height:clamp(50px,12vw,68px);
     border-radius:50%;
     border:2px solid rgba(255,255,255,.85);
     background:black;
     color:white;
-    font-size:26px;
+    font-size: clamp(20px,5vw,26px);
     cursor:pointer;
     display:flex;
     align-items:center;
     justify-content:center;
-    box-shadow:0 10px 30px rgba(0,0,0,.6);
+    box-shadow:0 8px 25px rgba(0,0,0,.6);
     transition:
         transform .25s ease,
         box-shadow .25s ease,
@@ -111,7 +112,7 @@ body{
 .play-btn:hover{
     transform:scale(1.12);
     background:#111;
-    box-shadow:0 14px 40px rgba(0,0,0,.8);
+    box-shadow:0 12px 35px rgba(0,0,0,.8);
 }
 
 .play-btn:active{
@@ -121,12 +122,22 @@ body{
 /* CREDIT */
 .credit{
     position:absolute;
-    bottom:12px;
+    bottom:10px;
     text-align:center;
-    font-size:11px;
+    font-size:12px;
     opacity:.6;
     line-height:1.4;
-    color:white; 
+}
+
+/* RESPONSIVE ADJUSTMENT */
+@media(max-width:400px){
+    .player{
+        padding:15px;
+    }
+    #subtitle{
+        margin-bottom:20px;
+    }
+}
 </style>
 </head>
 
@@ -216,4 +227,4 @@ audio.addEventListener("timeupdate",()=>{
 </script>
 
 </body>
-    </html>
+</html>
