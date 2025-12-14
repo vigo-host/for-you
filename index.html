@@ -57,7 +57,9 @@ body{
 /* PLAYER FIXED BOTTOM */
 .player{
     position:fixed;
-    bottom:20px; /* jarak dari bawah layar */
+    bottom:50px; /* dinaikkan sedikit agar credit terlihat */
+    left:50%;
+    transform:translateX(-50%); /* center horizontal */
     width:90%;
     max-width:360px;
     display:flex;
@@ -72,8 +74,7 @@ body{
     background:rgba(255,255,255,.3);
     border-radius:5px;
     overflow:hidden;
-    margin-bottom:12px;
-    position:relative;
+    margin-bottom:8px;
 }
 
 .progress-bar{
@@ -96,7 +97,7 @@ body{
 .controls{
     display:flex;
     justify-content:center;
-    margin-top:5px;
+    width:100%;
 }
 
 /* PLAY BUTTON — CENTER BOTTOM */
@@ -117,6 +118,7 @@ body{
         transform .25s ease,
         box-shadow .25s ease,
         background .25s ease;
+    margin-top:5px; /* naikkan tombol sedikit */
 }
 
 .play-btn:hover{
@@ -131,8 +133,8 @@ body{
 
 /* CREDIT */
 .credit{
-    position:absolute;
-    bottom:5px;
+    position:fixed;
+    bottom:10px;
     text-align:center;
     font-size:12px;
     opacity:.6;
@@ -245,4 +247,4 @@ audio.addEventListener("timeupdate",()=>{
 </script>
 
 </body>
-    </html>
+</html>
