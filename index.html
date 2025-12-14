@@ -43,11 +43,11 @@ body{
 
 /* SUBTITLE */
 #subtitle{
-    font-size: clamp(18px,5vw,34px); /* responsif HP & desktop */
+    font-size: clamp(18px,5vw,34px);
     font-weight:600;
     text-align:center;
     max-width:95%;
-    margin-bottom:30px;
+    margin-bottom:40px; /* tambah jarak ke player */
     opacity:0;
     transition:opacity .6s ease;
     text-shadow:
@@ -57,14 +57,16 @@ body{
 
 /* PLAYER */
 .player{
-    width:90%;           /* responsif */
-    max-width:360px;     /* batas atas desktop */
+    width:90%;
+    max-width:360px;
     background:rgba(0,0,0,.55);
     backdrop-filter:blur(10px);
     border-radius:22px;
-    padding:18px;
-    margin-top:-10px;
+    padding:20px;
     margin-bottom:50px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
 /* PROGRESS */
@@ -74,13 +76,23 @@ body{
     background:rgba(255,255,255,.3);
     border-radius:5px;
     overflow:hidden;
-    margin-bottom:18px;
+    margin-bottom:12px;
+    position:relative;
 }
 
 .progress-bar{
     height:100%;
     width:0%;
     background:white;
+}
+
+/* AUDIO TIME */
+.time{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    margin-bottom:15px;
 }
 
 /* CONTROLS */
@@ -130,13 +142,12 @@ body{
     color:white;
 }
 
-/* RESPONSIVE ADJUSTMENT */
 @media(max-width:400px){
     .player{
         padding:15px;
     }
     #subtitle{
-        margin-bottom:20px;
+        margin-bottom:30px;
     }
 }
 </style>
@@ -154,6 +165,11 @@ body{
     <div id="subtitle"></div>
 
     <div class="player">
+        <div class="time">
+            <span id="currentTime">0:00</span>
+            <span id="duration">0:00</span>
+        </div>
+
         <div class="progress">
             <div class="progress-bar" id="progressBar"></div>
         </div>
@@ -165,7 +181,6 @@ body{
 
 </div>
 
-<!-- CREDIT -->
 <div class="credit">
     Made with ❤️ by Vigoo<br>
     TikTok: @.ovidio_guzman
@@ -180,6 +195,8 @@ const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
 const subtitle = document.getElementById("subtitle");
 const progressBar = document.getElementById("progressBar");
+const currentTimeEl = document.getElementById("currentTime");
+const durationEl = document.getElementById("duration");
 
 const subtitles = [
  { time: 0.0, text: "Lantas mengapa ku masih menaruh hati" },
@@ -195,6 +212,17 @@ const subtitles = [
 
 let lastText = "";
 
+function formatTime(sec){
+    const minutes = Math.floor(sec/60);
+    const seconds = Math.floor(sec%60);
+    return `${minutes}:${seconds < 10 ? '0'+seconds : seconds}`;
+}
+
+// Set duration when metadata loaded
+audio.addEventListener('loadedmetadata', ()=>{
+    durationEl.textContent = formatTime(audio.duration);
+});
+
 playBtn.onclick = () => {
     if(audio.paused){
         audio.play();
@@ -209,6 +237,7 @@ audio.addEventListener("timeupdate",()=>{
     if(audio.duration){
         progressBar.style.width =
             (audio.currentTime / audio.duration) * 100 + "%";
+        currentTimeEl.textContent = formatTime(audio.currentTime);
     }
 
     for(let i=subtitles.length-1;i>=0;i--){
