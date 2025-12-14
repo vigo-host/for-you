@@ -60,10 +60,6 @@ body{
     bottom:20px; /* jarak dari bawah layar */
     width:90%;
     max-width:360px;
-    background:rgba(0,0,0,.55);
-    backdrop-filter:blur(10px);
-    border-radius:22px;
-    padding:15px 20px;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -76,7 +72,7 @@ body{
     background:rgba(255,255,255,.3);
     border-radius:5px;
     overflow:hidden;
-    margin-bottom:8px;
+    margin-bottom:12px;
     position:relative;
 }
 
@@ -93,15 +89,17 @@ body{
     justify-content:space-between;
     font-size:12px;
     margin-bottom:10px;
+    color:white;
 }
 
 /* CONTROLS */
 .controls{
     display:flex;
     justify-content:center;
+    margin-top:5px;
 }
 
-/* PLAY BUTTON — SPOTIFY STYLE */
+/* PLAY BUTTON — CENTER BOTTOM */
 .play-btn{
     width:clamp(50px,12vw,68px);
     height:clamp(50px,12vw,68px);
